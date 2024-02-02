@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timelapse App</title>
+    <title>Timelapse Page</title>
 </head>
 <body>
-    <h1>Welcome to the Timelapse App</h1>
-    <form action="/" method="post">
-        <label for="rtsp_url">RTSP URL:</label>
-        <input type="text" id="rtsp_url" name="rtsp_url" required><br>
-
-        <label for="output_path">Output Path:</label>
-        <input type="text" id="output_path" name="output_path" required><br>
-
-        <button type="submit">Capture Image</button>
+    <h1>Welcome to the Timelapse Page</h1>
+    
+    <form method="POST" action="/">
+        <input type="submit" value="Create Timelapse">
     </form>
+
+    {% if latest_video %}
+        <h2>Latest Video:</h2>
+        <video width="640" height="480" controls>
+            <source src="{{ url_for('video') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <p>Download the video: <a href="{{ url_for('video') }}" download>Download</a></p>
+    {% else %}
+        <p>No videos available yet.</p>
+    {% endif %}
 </body>
 </html>
