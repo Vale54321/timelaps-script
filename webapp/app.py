@@ -7,10 +7,10 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         rtsp_url = request.form['rtsp_url']
-        output_path = request.form['output_path']
+        output_path = '/app/images/'  # Use the shared volume path
 
-        # Call your Python script using a subprocess
-        subprocess.run(['python', 'capture_image.py', rtsp_url, output_path])
+        # Call the timelapse script using a subprocess
+        subprocess.run(['python', '/app/timelapse_script.py', rtsp_url, output_path])
 
     return render_template('index.html')
 
