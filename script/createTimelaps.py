@@ -35,12 +35,13 @@ def create_video(images_folder, output_video_path, fps=1, x=1920, y=1080):
 
 if __name__ == "__main__":
     # Check if the command line argument for the images folder is provided
-    if len(sys.argv) < 2:
-        print("Usage: python createTimelaps.py <images_folder>")
+    if len(sys.argv) < 3:
+        print("Usage: python createTimelaps.py <images_folder> <video_folder>")
         sys.exit(1)
 
     # Get the video folder from the command line argument
-    video_folder = sys.argv[1]
+    images_folder = sys.argv[1]
+    video_folder = sys.argv[2]
 
     # Save an image from the RTSP stream
-    create_video('../images/', video_folder)
+    create_video(images_folder, video_folder)
