@@ -43,9 +43,9 @@ def job():
 
 if __name__ == "__main__":
     # Schedule the job to run every minute
-    schedule.every(1).minutes.do(job)
+    schedule.every(30).seconds.do(job)
 
     # Run the scheduler continuously
     while True:
         schedule.run_pending()
-        time.sleep(5)  # Sleep for a short duration to avoid high CPU usage
+        time.sleep(3)  # Sleep for a short duration to avoid high CPU usage
