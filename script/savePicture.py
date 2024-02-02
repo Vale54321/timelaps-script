@@ -48,4 +48,4 @@ if __name__ == "__main__":
     # Run the scheduler continuously
     while True:
         schedule.run_pending()
-        time.sleep(3)  # Sleep for a short duration to avoid high CPU usage
+        time.sleep(1)  # Sleep for a short duration to avoid high CPU usage
