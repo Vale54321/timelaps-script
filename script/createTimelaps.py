@@ -17,7 +17,6 @@ def create_video(images_folder, output_video_path, fps=1, x=1920, y=1080):
     # Loop through all image files
     for image_file in image_files:
         image_path = os.path.join(images_folder, image_file)
-        print(image_path)
 
         # Read the image
         image = cv2.imread(image_path)
@@ -31,7 +30,7 @@ def create_video(images_folder, output_video_path, fps=1, x=1920, y=1080):
 
     # Release the video writer
     video_writer.release()
-    print(f"Video saved at {os.path.abspath(output_video_path_full)}")
+    print(f"{os.path.abspath(output_video_path_full)}")
 
 if __name__ == "__main__":
     # Check if the command line argument for the images folder is provided

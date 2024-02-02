@@ -17,7 +17,12 @@ def get_latest_video():
 def index():
     if request.method == 'POST':
         # Call the timelapse script using a subprocess
-        subprocess.run(['python', '../script/createTimelaps.py', '../images/', 'static/'])
+        result = subprocess.run(['python', '../script/createTimelaps.py', '../images/', 'static/'], stdout=subprocess.PIPE, check=True)
+        # The subprocess has finished executing at this point
+        print("Subprocess completed with return code:", result.returncode)
+        # Get the captured stdout
+        output_text = result.stdout.decode('utf-8')
+        print("Captured output:", output_text)
         return redirect(url_for('index'))
 
 
