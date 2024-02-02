@@ -43,7 +43,7 @@ def job():
 
 if __name__ == "__main__":
     # Schedule the job to run every minute
-    schedule.every(10).seconds.do(job)
+    schedule.every(1).minutes.do(job)
 
     # Run the scheduler continuously
     while True:
