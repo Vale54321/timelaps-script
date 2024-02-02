@@ -2,10 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 import subprocess
 import os
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__)
 
 def get_latest_video():
-    video_folder = os.path.join(os.getcwd(), 'static')
+    video_folder = os.path.join(os.getcwd(), 'app/static')
     videos = [f for f in os.listdir(video_folder) if f.endswith('.mp4')]
     if videos:
         # latest_video = max(videos, key=os.path.getctime)
