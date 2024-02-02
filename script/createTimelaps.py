@@ -43,4 +43,4 @@ if __name__ == "__main__":
     video_folder = sys.argv[1]
 
     # Save an image from the RTSP stream
-    create_video('images/', video_folder)
+    create_video('../images/', video_folder)

@@ -17,7 +17,7 @@ def get_latest_video():
 def index():
     if request.method == 'POST':
         # Call the timelapse script using a subprocess
-        subprocess.run(['python', 'script/createTimelaps.py', 'webapp/static/'])
+        subprocess.run(['python', '../script/createTimelaps.py', 'static/'])
         return redirect(url_for('index'))
 
 
