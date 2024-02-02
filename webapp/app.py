@@ -9,7 +9,7 @@ def get_latest_video():
     videos = [f for f in os.listdir(video_folder) if f.endswith('.mp4')]
     if videos:
         # latest_video = max(videos, key=os.path.getctime)
-        return os.path.join(video_folder, videos[6])
+        return os.path.join(video_folder, videos[0])
     else:
         return None
 
