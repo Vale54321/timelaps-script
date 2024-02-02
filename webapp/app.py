@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 def get_latest_video():
-    video_folder = os.path.join(os.getcwd(), 'app/static')
+    video_folder = os.path.join(os.getcwd(), 'static')
     videos = [f for f in os.listdir(video_folder) if f.endswith('.mp4')]
     if videos:
         # latest_video = max(videos, key=os.path.getctime)
