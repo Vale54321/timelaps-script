@@ -5,8 +5,8 @@ import sys
 
 def create_video(images_folder, output_video_path, fps=1, x=1920, y=1080):
     # Get a list of all image files in the folder
-    image_files = [f for f in os.listdir(images_folder) if f.endswith(".jpg")]
-
+    image_files = sorted([f for f in os.listdir(images_folder) if f.endswith(".jpg")])
+    
     # Initialize the video writer
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M")
