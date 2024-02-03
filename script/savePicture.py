@@ -23,10 +23,13 @@ def save_image_from_rtsp(rtsp_url, output_path):
     
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
+    # Resize the frame to Full HD resolution (1920 x 1080)
+    frame = cv2.resize(frame, (1920, 1080))
+
     # Get the current timestamp
     timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
-    # Save the frame as an image
+    # Save the resized frame as an image
     cv2.imwrite(f"{output_path}image_{timestamp}.jpg", frame)
 
     # Release the camera capture object
@@ -34,7 +37,7 @@ def save_image_from_rtsp(rtsp_url, output_path):
 
 def job():
     # Set your RTSP URL and output path
-    rtsp_url = "rtsps://192.168.1.1:7441/exQBgfl7iPoNRAfs?enableSrtp"
+    rtsp_url = "rtsps://192.168.1.1:7441/mstHSxlikG8CrMfh?enableSrtp"
     output_path = "images/"  # Replace with your desired output path
 
     # Save an image from the RTSP stream
@@ -42,7 +45,7 @@ def job():
     print(f"Image saved at {os.getcwd() + output_path}")
 
 if __name__ == "__main__":
-    # Schedule the job to run every minute
+    # Schedule the job to run every 30 seconds
     schedule.every(30).seconds.do(job)
 
     # Run the scheduler continuously
