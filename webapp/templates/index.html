@@ -1,62 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timelapse Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
 </head>
 <body>
-    <h1>Welcome to the Timelapse Page</h1>
-    
-    <form id="timelapse-form">
-        <button type="submit" id="timelapse-btn" class="btn btn-primary">Create Timelapse</button>
-        <div id="progress-container" style="display: none;">
-            <p>Progress: <span id="progress">0%</span></p>
-            <progress id="progress-bar" value="0" max="100"></progress>
-            <div id="time-remaining-container" style="display: none;">
-                <p>Time Remaining: <span id="time-remaining">Calculating...</span> seconds</p>
-            </div>
-        </div>
-    </form>
+    <header>
+        <h1>Timelapse Page</h1>
+    </header>
 
-    {% if latest_video %}
-        <h2>Latest Video:</h2>
-        <video width="640" height="480" controls>
-            <source src="{{ url_for('video') }}" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+    <main>
+        <section id="timelapse-section">
+            <form id="timelapse-form">
+                <button type="submit" id="timelapse-btn">Create Timelapse</button>
+                <div id="progress-container" style="display: none;">
+                    <p>Progress: <span id="progress">0%</span></p>
+                    <progress id="progress-bar" value="0" max="100"></progress>
+                    <div id="time-remaining-container">
+                        <p>Time Remaining: <span id="time-remaining">Calculating...</span> seconds</p>
+                    </div>
+                </div>
+            </form>
+        </section>
 
-        <p>Download the video: <a href="{{ url_for('video') }}" download>Download</a></p>
-    {% else %}
-        <p>No videos available yet.</p>
-    {% endif %}
+        <section id="video-section">
+            {% if latest_video %}
+                <h2>Latest Video:</h2>
+                <video width="1920" height="1080" controls>
+                    <source src="{{ url_for('video') }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>Download the video: <a href="{{ url_for('video') }}" download>Download</a></p>
+            {% else %}
+                <p>No videos available yet.</p>
+            {% endif %}
+        </section>
+    </main>
 
     <script>
-            var socket = io.connect('http://' + document.domain + ':' + location.port);
-
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+    
         socket.on('update_time_remaining', function(data) {
             var timeRemainingElement = document.getElementById('time-remaining');
-            timeRemainingElement.innerText = data.time_remaining.toFixed(2);
-
+            var timeRemainingContainer = document.getElementById('time-remaining-container');
+    
+            var remainingTimeInSeconds = Math.max(data.time_remaining, 0);
+            var hours = Math.floor(remainingTimeInSeconds / 3600);
+            var minutes = Math.floor((remainingTimeInSeconds % 3600) / 60);
+            var seconds = Math.floor(remainingTimeInSeconds % 60);
+    
+            var formattedTime = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+    
+            timeRemainingElement.innerText = formattedTime;
+    
             if (data.time_remaining > 0) {
                 // Show the time remaining container if not already visible
-                document.getElementById('time-remaining-container').style.display = 'block';
+                timeRemainingContainer.style.display = 'block';
             } else {
                 // Hide the time remaining container when time remaining is 0 or less
-                document.getElementById('time-remaining-container').style.display = 'none';
+                timeRemainingContainer.style.display = 'none';
             }
         });
+    
         socket.on('update_progress', function(data) {
             var progressElement = document.getElementById('progress');
             var progressBar = document.getElementById('progress-bar');
-            progressElement.innerText = data.progress + '%';
+    
+            var roundedProgress = Math.floor(data.progress);
+    
+            progressElement.innerText = roundedProgress + '%';
             progressBar.value = data.progress;
-
+    
             if (data.progress === 100) {
                 // Hide the progress container when the progress reaches 100%
                 document.getElementById('progress-container').style.display = 'none';
                 // Enable the button
                 document.getElementById('timelapse-btn').disabled = false;
+                progressElement.innerText = '0' + '%';
+                progressBar.value = 0;
             } else {
                 // Show the progress container if not already visible
                 document.getElementById('progress-container').style.display = 'block';
@@ -64,19 +89,19 @@
                 document.getElementById('timelapse-btn').disabled = true;
             }
         });
-
+    
         $(document).ready(function() {
             $('#timelapse-form').submit(function(event) {
                 event.preventDefault();
-
+    
                 // Reset the progress bar and show the progress container
                 var progressBar = document.getElementById('progress-bar');
                 progressBar.value = 0;
-
+    
                 document.getElementById('progress-container').style.display = 'block';
                 // Disable the button during processing
                 document.getElementById('timelapse-btn').disabled = true;
-
+    
                 // Use AJAX for form submission
                 $.ajax({
                     type: 'POST',
@@ -90,6 +115,10 @@
                 });
             });
         });
+    
+        function pad(number) {
+            return (number < 10 ? '0' : '') + number;
+        }
     </script>
 </body>
 </html>
