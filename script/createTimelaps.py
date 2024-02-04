@@ -8,7 +8,7 @@ def create_video(images_folder, output_video_path, fps=30, x=1920, y=1080):
     image_files = sorted([f for f in os.listdir(images_folder) if f.endswith(".jpg")])
 
     # Initialize the video writer
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    fourcc = cv2.VideoWriter_fourcc(*'x265')
     timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M")
     output_video_path_full = os.path.join(output_video_path, f"timelapse_{timestamp}.mp4")
     os.makedirs(os.path.dirname(output_video_path_full), exist_ok=True)
