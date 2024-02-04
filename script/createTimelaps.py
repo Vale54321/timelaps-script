@@ -15,7 +15,7 @@ def create_video(images_folder, output_video_path, fps=30, x=1920, y=1080):
     video_writer = cv2.VideoWriter(output_video_path_full, fourcc, fps, (x, y))
 
     # Loop through all image files
-    for image_file in image_files:
+    for i, image_file in enumerate(image_files, start=1):
         image_path = os.path.join(images_folder, image_file)
 
         # Read the image
@@ -28,9 +28,14 @@ def create_video(images_folder, output_video_path, fps=30, x=1920, y=1080):
             # Write the image to the video
             video_writer.write(image)
 
+            # Print progress
+            progress = i / len(image_files) * 100
+            sys.stdout.write(f"\rProgress: {progress:.2f}%")
+            sys.stdout.flush()
+
     # Release the video writer
     video_writer.release()
-    print(f"{os.path.abspath(output_video_path_full)}")
+    print(f"\n{os.path.abspath(output_video_path_full)}")
 
 if __name__ == "__main__":
     # Check if the command line argument for the images folder is provided

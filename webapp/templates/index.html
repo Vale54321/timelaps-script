@@ -2,12 +2,18 @@
 <html>
 <head>
     <title>Timelapse Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
 </head>
 <body>
     <h1>Welcome to the Timelapse Page</h1>
     
-    <form method="POST" action="/">
-        <input type="submit" value="Create Timelapse">
+    <form id="timelapse-form">
+        <button type="submit" id="timelapse-btn" class="btn btn-primary">Create Timelapse</button>
+        <div id="progress-container" style="display: none;">
+            <p>Progress: <span id="progress">0%</span></p>
+            <progress id="progress-bar" value="0" max="100"></progress>
+        </div>
     </form>
 
     {% if latest_video %}
@@ -21,5 +27,54 @@
     {% else %}
         <p>No videos available yet.</p>
     {% endif %}
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('update_progress', function(data) {
+            var progressElement = document.getElementById('progress');
+            var progressBar = document.getElementById('progress-bar');
+            progressElement.innerText = data.progress + '%';
+            progressBar.value = data.progress;
+
+            if (data.progress === 100) {
+                // Hide the progress container when the progress reaches 100%
+                document.getElementById('progress-container').style.display = 'none';
+                // Enable the button
+                document.getElementById('timelapse-btn').disabled = false;
+            } else {
+                // Show the progress container if not already visible
+                document.getElementById('progress-container').style.display = 'block';
+                // Disable the button
+                document.getElementById('timelapse-btn').disabled = true;
+            }
+        });
+
+        $(document).ready(function() {
+            $('#timelapse-form').submit(function(event) {
+                event.preventDefault();
+
+                // Reset the progress bar and show the progress container
+                var progressBar = document.getElementById('progress-bar');
+                progressBar.value = 0;
+
+                document.getElementById('progress-container').style.display = 'block';
+                // Disable the button during processing
+                document.getElementById('timelapse-btn').disabled = true;
+
+                // Use AJAX for form submission
+                $.ajax({
+                    type: 'POST',
+                    url: '/create_timelapse',
+                    success: function() {
+                        // Form submission success
+                    },
+                    error: function() {
+                        // Form submission error
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
