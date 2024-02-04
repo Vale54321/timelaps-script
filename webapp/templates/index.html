@@ -16,6 +16,13 @@
     <main>
         <section id="timelapse-section">
             <form id="timelapse-form">
+                <label for="folder-select">Select Date:</label>
+                <select id="folder-select" name="folderSelect">
+                    {% for folder in folder_list %}
+                        <option value="{{ folder }}">{{ folder }}</option>
+                    {% endfor %}
+                </select>
+                
                 <button type="submit" id="timelapse-btn">Create Timelapse</button>
                 <div id="progress-container" style="display: none;">
                     <p>Progress: <span id="progress">0%</span></p>
@@ -91,30 +98,34 @@
         });
     
         $(document).ready(function() {
-            $('#timelapse-form').submit(function(event) {
-                event.preventDefault();
-    
-                // Reset the progress bar and show the progress container
-                var progressBar = document.getElementById('progress-bar');
-                progressBar.value = 0;
-    
-                document.getElementById('progress-container').style.display = 'block';
-                // Disable the button during processing
-                document.getElementById('timelapse-btn').disabled = true;
-    
-                // Use AJAX for form submission
-                $.ajax({
-                    type: 'POST',
-                    url: '/create_timelapse',
-                    success: function() {
-                        // Form submission success
-                    },
-                    error: function() {
-                        // Form submission error
-                    }
-                });
-            });
+    $('#timelapse-form').submit(function(event) {
+        event.preventDefault();
+
+        // Reset the progress bar and show the progress container
+        var progressBar = document.getElementById('progress-bar');
+        progressBar.value = 0;
+
+        document.getElementById('progress-container').style.display = 'block';
+        // Disable the button during processing
+        document.getElementById('timelapse-btn').disabled = true;
+
+        // Get the selected date from the dropdown
+        var selectedDate = $('#folder-select').val();
+
+        // Use AJAX for form submission
+        $.ajax({
+            type: 'POST',
+            url: '/create_timelapse',
+            data: { 'selected_date': selectedDate },  // Include the selected date in the request
+            success: function() {
+                // Form submission success
+            },
+            error: function() {
+                // Form submission error
+            }
         });
+    });
+});
     
         function pad(number) {
             return (number < 10 ? '0' : '') + number;

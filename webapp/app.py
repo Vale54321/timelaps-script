@@ -17,6 +17,22 @@ def get_latest_video():
         return latest_video
     else:
         return None
+    
+def get_folder_list():
+    images_path = "../images/"  # Adjust the path as needed
+    folder_list = []
+
+    try:
+        # List all directories in the specified path
+        folders = [f for f in os.listdir(images_path) if os.path.isdir(os.path.join(images_path, f))]
+        
+        # Sort the folders by name (assuming the date strings are formatted in a way that sorting them alphabetically also sorts them chronologically)
+        folder_list = sorted(folders, reverse=True)
+
+    except FileNotFoundError:
+        print(f"Error: Path '{images_path}' not found.")
+    
+    return folder_list
 
 @socketio.on('progress_update')
 def handle_progress_update(progress):
@@ -30,7 +46,8 @@ def handle_time_remaining_update(time_remaining):
 def index():
     # Get the latest video filename
     latest_video = get_latest_video()
-    return render_template('index.html', latest_video=latest_video)
+    folder_list = get_folder_list() 
+    return render_template('index.html', latest_video=latest_video, folder_list=folder_list)
 
 @app.route('/video')
 def video():
@@ -42,7 +59,9 @@ def video():
 
 @app.route('/create_timelapse', methods=['POST'])
 def create_timelapse():
-    timestamp = datetime.now().strftime("%Y_%m_%d")
+    selected_date = request.form.get('selected_date')  # Get the selected date from the form data
+    print("data" + selected_date)
+    timestamp = selected_date if selected_date else datetime.now().strftime("%Y_%m_%d")
     process = subprocess.Popen(['python', '../script/createTimelaps.py', '../images/' + timestamp + '/', 'static/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
     
     start_time = time.time()
