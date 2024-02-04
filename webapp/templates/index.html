@@ -13,6 +13,9 @@
         <div id="progress-container" style="display: none;">
             <p>Progress: <span id="progress">0%</span></p>
             <progress id="progress-bar" value="0" max="100"></progress>
+            <div id="time-remaining-container" style="display: none;">
+                <p>Time Remaining: <span id="time-remaining">Calculating...</span> seconds</p>
+            </div>
         </div>
     </form>
 
@@ -29,8 +32,20 @@
     {% endif %}
 
     <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
 
+        socket.on('update_time_remaining', function(data) {
+            var timeRemainingElement = document.getElementById('time-remaining');
+            timeRemainingElement.innerText = data.time_remaining.toFixed(2);
+
+            if (data.time_remaining > 0) {
+                // Show the time remaining container if not already visible
+                document.getElementById('time-remaining-container').style.display = 'block';
+            } else {
+                // Hide the time remaining container when time remaining is 0 or less
+                document.getElementById('time-remaining-container').style.display = 'none';
+            }
+        });
         socket.on('update_progress', function(data) {
             var progressElement = document.getElementById('progress');
             var progressBar = document.getElementById('progress-bar');

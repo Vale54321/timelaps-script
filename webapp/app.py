@@ -3,6 +3,7 @@ from flask_socketio import SocketIO
 import subprocess
 import os
 import re
+import time
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -19,6 +20,10 @@ def get_latest_video():
 @socketio.on('progress_update')
 def handle_progress_update(progress):
     socketio.emit('update_progress', {'progress': progress})
+
+@socketio.on('time_remaining_update')
+def handle_time_remaining_update(time_remaining):
+    socketio.emit('update_time_remaining', {'time_remaining': time_remaining})
 
 @app.route('/', methods=['GET'])
 def index():
@@ -38,6 +43,8 @@ def video():
 def create_timelapse():
     process = subprocess.Popen(['python', '../script/createTimelaps.py', '../images/', 'static/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
     
+    start_time = time.time()
+    progress = 0
     while True:
         output_line = process.stdout.readline()
         if output_line == '' and process.poll() is not None:
@@ -48,7 +55,17 @@ def create_timelapse():
                 progress = float(match.group(1))
                 socketio.emit('update_progress', {'progress': progress})
 
-    socketio.emit('update_progress', {'progress': 100})
+            elapsed_time = time.time() - start_time
+
+            # Check if progress is greater than zero before calculating time_per_frame
+            if progress > 0:
+                time_per_frame = elapsed_time / (progress / 100)
+                remaining_time = (100 - progress) / 100 * time_per_frame
+            else:
+                time_per_frame = 0
+                remaining_time = 0
+
+            socketio.emit('update_time_remaining', {'time_remaining': remaining_time})
     
     # Return a JSON response
     return jsonify({'message': 'Timelapse creation started.'}), 200

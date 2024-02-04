@@ -2,17 +2,20 @@ import cv2
 import os
 from datetime import datetime
 import sys
+import time
 
 def create_video(images_folder, output_video_path, fps=30, x=1920, y=1080):
     # Get a list of all image files in the folder
     image_files = sorted([f for f in os.listdir(images_folder) if f.endswith(".jpg")])
 
     # Initialize the video writer
-    fourcc = cv2.VideoWriter_fourcc(*'x265')
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M")
     output_video_path_full = os.path.join(output_video_path, f"timelapse_{timestamp}.mp4")
     os.makedirs(os.path.dirname(output_video_path_full), exist_ok=True)
     video_writer = cv2.VideoWriter(output_video_path_full, fourcc, fps, (x, y))
+
+    start_time = time.time()
 
     # Loop through all image files
     for i, image_file in enumerate(image_files, start=1):
@@ -24,17 +27,23 @@ def create_video(images_folder, output_video_path, fps=30, x=1920, y=1080):
         # Check if the image exists
         if image is not None:
             # Resize the image if needed
-            image = cv2.resize(image, (x, y))  # Uncomment and adjust if necessary
+            image = cv2.resize(image, (x, y))
             # Write the image to the video
             video_writer.write(image)
 
-            # Print progress
+            # Print progress and time remaining
             progress = i / len(image_files) * 100
-            sys.stdout.write(f"\rProgress: {progress:.2f}%")
+            elapsed_time = time.time() - start_time
+            time_per_frame = elapsed_time / i
+            remaining_frames = len(image_files) - i
+            remaining_time = remaining_frames * time_per_frame
+            sys.stdout.write(f"\rProgress: {progress:.2f}% | Time Remaining: {remaining_time:.2f} seconds")
             sys.stdout.flush()
 
     # Release the video writer
     video_writer.release()
+    
+    # Print completion message
     print(f"\n{os.path.abspath(output_video_path_full)}")
 
 if __name__ == "__main__":
