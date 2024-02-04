@@ -41,7 +41,8 @@ def video():
 
 @app.route('/create_timelapse', methods=['POST'])
 def create_timelapse():
-    process = subprocess.Popen(['python', '../script/createTimelaps.py', '../images/', 'static/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+    timestamp = datetime.now().strftime("%Y_%m_%d")
+    process = subprocess.Popen(['python', '../script/createTimelaps.py', '../images/' + timestamp + '/', 'static/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
     
     start_time = time.time()
     progress = 0
