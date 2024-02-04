@@ -48,13 +48,18 @@ def create_video(images_folder, output_video_path, fps=30, x=1920, y=1080):
 
 if __name__ == "__main__":
     # Check if the command line argument for the images folder is provided
-    if len(sys.argv) < 3:
-        print("Usage: python createTimelaps.py <images_folder> <video_folder>")
+    if len(sys.argv) < 4:
+        print("Usage: python createTimelaps.py <images_folder> <video_folder> <video_fps>")
         sys.exit(1)
 
     # Get the video folder from the command line argument
     images_folder = sys.argv[1]
     video_folder = sys.argv[2]
+    try:
+        video_fps = float(sys.argv[3])  # Convert the string to a float
+    except ValueError:
+        print("Error: Invalid value for video_fps. Please provide a valid float.")
+        sys.exit(1)
 
     # Save an image from the RTSP stream
-    create_video(images_folder, video_folder)
+    create_video(images_folder, video_folder, fps=video_fps)

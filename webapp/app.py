@@ -59,10 +59,11 @@ def video():
 
 @app.route('/create_timelapse', methods=['POST'])
 def create_timelapse():
+    selected_fps = request.form.get('selected_fps')  # Get the selected date from the form data
     selected_date = request.form.get('selected_date')  # Get the selected date from the form data
-    print("data" + selected_date)
+    print("data" + selected_fps)
     timestamp = selected_date if selected_date else datetime.now().strftime("%Y_%m_%d")
-    process = subprocess.Popen(['python', '../script/createTimelaps.py', '../images/' + timestamp + '/', 'static/'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+    process = subprocess.Popen(['python', '../script/createTimelaps.py', '../images/' + timestamp + '/', 'static/', selected_fps], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
     
     start_time = time.time()
     progress = 0
