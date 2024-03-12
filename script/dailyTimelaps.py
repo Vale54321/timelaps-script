@@ -24,13 +24,13 @@ def job():
 if __name__ == "__main__":
     print("main started")
     # Schedule the job to run every 30 seconds
-    schedule.every(30).minutes.do(job)
-
+    # schedule.every(30).minutes.do(job)
+    job()
     # Run the scheduler continuously
-    while True:
-                # Print the next scheduled run time
-        next_run = schedule.next_run()
-        print(f"Next run scheduled at: {next_run}")
+    # while True:
+    #             # Print the next scheduled run time
+    #     next_run = schedule.next_run()
+    #     print(f"Next run scheduled at: {next_run}")
 
-        schedule.run_pending()
-        time.sleep(5)  # Sleep for a short duration to avoid high CPU usage
+    #     schedule.run_pending()
+    #     time.sleep(5)  # Sleep for a short duration to avoid high CPU usage
