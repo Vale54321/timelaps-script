@@ -6,13 +6,20 @@ import time
 import subprocess
 
 def job():
+    print("Job started")
+    
     # Set your RTSP URL and output path
     timestamp = datetime.now().strftime("%Y_%m_%d")
     output_path = "videos/" + timestamp + "/"  # Replace with your desired output path
 
+    print(f"Saving image from RTSP stream to {os.getcwd() + output_path}")
+
     # Save an image from the RTSP stream
-    subprocess.Popen(['python', 'createTimelaps.py', 'images/' + timestamp + '/', 'static/', 60], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+    subprocess.Popen(['python', 'createTimelaps.py', 'images/' + timestamp + '/', 'static/', '60'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+
     print(f"Image saved at {os.getcwd() + output_path}")
+
+    print("Job completed")
 
 if __name__ == "__main__":
     # Schedule the job to run every 30 seconds
