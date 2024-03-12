@@ -15,7 +15,7 @@ def job():
     print(f"Saving image from RTSP stream to {os.getcwd() + output_path}")
 
     # Save an image from the RTSP stream
-    subprocess.Popen(['python', 'createTimelaps.py', 'images/' + timestamp + '/', 'static/', '60'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+    subprocess.Popen(['python', 'createTimelaps.py', 'images/' + timestamp + '/', 'videos/', '60'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
 
     print(f"Image saved at {os.getcwd() + output_path}")
 
