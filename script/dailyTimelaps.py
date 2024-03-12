@@ -22,6 +22,7 @@ def job():
     print("Job completed")
 
 if __name__ == "__main__":
+    print("main started")
     # Schedule the job to run every 30 seconds
     schedule.every(30).minutes.do(job)
 
