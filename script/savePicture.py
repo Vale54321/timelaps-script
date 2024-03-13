@@ -39,7 +39,7 @@ def job():
     # Set your RTSP URL and output path
     rtsp_url = "rtsps://10.20.30.1:7441/mstHSxlikG8CrMfh?enableSrtp"
     timestamp = datetime.now().strftime("%Y_%m_%d")
-    output_path = "images/" + timestamp + "/"  # Replace with your desired output path
+    output_path = "/images/" + timestamp + "/"  # Replace with your desired output path
 
     # Save an image from the RTSP stream
     save_image_from_rtsp(rtsp_url, output_path)
