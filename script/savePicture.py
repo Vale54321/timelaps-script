@@ -46,6 +46,7 @@ def job():
     print(f"Image saved at {os.getcwd() + "/" + output_path}")
 
 if __name__ == "__main__":
+    print(f"Start Pictue Saving")
     job()
     # Schedule the job to run every 30 seconds
     schedule.every(30).seconds.do(job)
