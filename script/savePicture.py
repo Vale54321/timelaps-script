@@ -43,10 +43,10 @@ def job():
 
     # Save an image from the RTSP stream
     save_image_from_rtsp(rtsp_url, output_path)
-    print(f"Image saved at {os.getcwd() + "/" + output_path}")
+    print("Image saved at " + os.getcwd() + "/" + output_path)
 
 if __name__ == "__main__":
-    print(f"Start Pictue Saving")
+    print("Start Pictue Saving")
     job()
     # Schedule the job to run every 30 seconds
     schedule.every(30).seconds.do(job)
