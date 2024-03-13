@@ -39,13 +39,14 @@ def job():
     # Set your RTSP URL and output path
     rtsp_url = "rtsps://10.20.30.1:7441/mstHSxlikG8CrMfh?enableSrtp"
     timestamp = datetime.now().strftime("%Y_%m_%d")
-    output_path = "/images/" + timestamp + "/"  # Replace with your desired output path
+    output_path = "../images/" + timestamp + "/"  # Replace with your desired output path
 
     # Save an image from the RTSP stream
     save_image_from_rtsp(rtsp_url, output_path)
-    print(f"Image saved at {os.getcwd() + output_path}")
+    print(f"Image saved at {os.getcwd() + "/" + output_path}")
 
 if __name__ == "__main__":
+    job()
     # Schedule the job to run every 30 seconds
     schedule.every(30).seconds.do(job)
 
