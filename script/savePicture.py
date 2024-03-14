@@ -31,10 +31,13 @@ def save_image_from_rtsp(rtsp_url, output_path):
     timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
     # Save the resized frame as an image
-    cv2.imwrite(f"{output_path}image_{timestamp}.jpg", frame)
+    image_filename = f"image_{timestamp}.jpg"
+    cv2.imwrite(os.path.join(output_path, image_filename), frame)
 
     # Release the camera capture object
     cap.release()
+
+    return image_filename
 
 def job():
     # Set your RTSP URL and output path
@@ -43,9 +46,10 @@ def job():
     output_path = "../images/" + timestamp + "/"  # Replace with your desired output path
 
     # Save an image from the RTSP stream
-    save_image_from_rtsp(rtsp_url, output_path)
-    print("Image saved at " + os.getcwd() + "/" + output_path)
-    sys.stdout.flush()  # Flush the standard output buffer
+    image_filename = save_image_from_rtsp(rtsp_url, output_path)
+    if image_filename:
+        print(f"/{os.getcwd()}/{__file__}$ Image saved at ../images/{timestamp}/{image_filename}")
+        sys.stdout.flush()  # Flush the standard output buffer
 
 if __name__ == "__main__":
     print("Start Picture Saving")
