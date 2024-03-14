@@ -1,11 +1,18 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
-    color: #495057;
+/* Reset default styles */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* Body styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+/* Header styles */
 header {
     background-color: #007bff;
     color: #fff;
@@ -13,12 +20,63 @@ header {
     padding: 20px;
 }
 
+/* Main styles */
 main {
-    max-width: 800px;
+    width: 800px; /* Fixed width for main container */
     margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-#timelapse-section {
+/* Section styles */
+section {
+    width: 100%; /* Each section takes up the full width of main container */
+    margin-bottom: 20px;
+}
+
+/* Image styles */
+#latest-picture {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Add cursor pointer to indicate it's clickable */
+}
+
+/* Larger image styles */
+#latest-picture.larger-size {
+    max-width: none; /* Remove max-width to allow image to expand */
+    height: 100vh; /* Set height to fill the viewport */
+    width: auto; /* Auto width */
+    position: fixed; /* Fixed position to overlay on top of other content */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto; /* Center the image */
+    z-index: 9999; /* Ensure it's on top of other content */
+    transition: width 0.3s, height 0.3s; /* Add transition effect */
+}
+
+
+/* Latest picture section styles */
+#latest-picture-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#latest-picture {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Timelapse section styles */
+#timelapse-section,
+#video-section {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
@@ -26,7 +84,9 @@ main {
 }
 
 #timelapse-form {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #timelapse-btn {
@@ -37,10 +97,13 @@ main {
     cursor: pointer;
     border: none;
     border-radius: 4px;
+    margin-top: 10px;
 }
 
+/* Progress container styles */
 #progress-container {
     margin-top: 20px;
+    display: none; /* Initially hidden */
 }
 
 #progress-bar {
@@ -51,24 +114,19 @@ main {
     margin-top: 10px;
 }
 
-#video-section {
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    color: #007bff;
-}
-
+/* Video styles */
 video {
     width: 100%;
     height: auto;
     margin-top: 20px;
 }
 
+/* Heading styles */
+h2 {
+    color: #007bff;
+}
+
+/* Anchor styles */
 a {
     color: #007bff;
     text-decoration: none;

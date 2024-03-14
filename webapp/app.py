@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, send_file, jsonify
+from flask import send_from_directory
 from flask_socketio import SocketIO
 import subprocess
 import os
@@ -41,6 +42,15 @@ def handle_progress_update(progress):
 @socketio.on('time_remaining_update')
 def handle_time_remaining_update(time_remaining):
     socketio.emit('update_time_remaining', {'time_remaining': time_remaining})
+
+@app.route('/latest_picture')
+def latest_picture():
+    timestamp = datetime.now().strftime("%Y_%m_%d")
+    images_folder = "../images/" + timestamp  # Adjust the path as needed
+    # Get the latest picture in the specified directory
+    latest_picture_path = max([os.path.join(images_folder, f) for f in os.listdir(images_folder)], key=os.path.getctime)
+    latest_picture_filename = os.path.basename(latest_picture_path)
+    return send_from_directory(images_folder, latest_picture_filename)
 
 @app.route('/', methods=['GET'])
 def index():

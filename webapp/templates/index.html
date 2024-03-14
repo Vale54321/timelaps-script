@@ -14,6 +14,10 @@
     </header>
 
     <main>
+        <section id="latest-picture-section">
+            <h2>Latest Picture:</h2>
+            <img id="latest-picture" class="normal-size" src="{{ url_for('latest_picture') }}" alt="Latest Picture" onclick="toggleImageSize()">
+        </section>
         <section id="timelapse-section">
             <form id="timelapse-form">
                 <label for="folder-select">Select Date:</label>
@@ -56,6 +60,21 @@
     </main>
 
     <script>
+        function toggleImageSize() {
+    var latestPictureElement = document.getElementById('latest-picture');
+
+    // Check if the image is currently at its normal size
+    if (latestPictureElement.classList.contains('normal-size')) {
+        // Switch to larger size
+        latestPictureElement.classList.remove('normal-size');
+        latestPictureElement.classList.add('larger-size');
+    } else {
+        // Switch to normal size
+        latestPictureElement.classList.remove('larger-size');
+        latestPictureElement.classList.add('normal-size');
+    }
+}
+
         var socket = io.connect('http://' + document.domain + ':' + location.port);
     
         socket.on('update_time_remaining', function(data) {
@@ -136,9 +155,32 @@
     });
 });
     
-        function pad(number) {
-            return (number < 10 ? '0' : '') + number;
-        }
+    function pad(number) {
+        return (number < 10 ? '0' : '') + number;
+    }
+
+// Function to update the latest picture
+function updateLatestPicture() {
+    var latestPictureElement = document.getElementById('latest-picture');
+    var currentSrc = latestPictureElement.src;
+
+    // Create a new Image object
+    var tempImg = new Image();
+    tempImg.onload = function() {
+        // Once the image is loaded, update the source of the latest picture element
+        latestPictureElement.src = this.src;
+    };
+
+    // Set the source of the temporary image to trigger the load event
+    tempImg.src = '/latest_picture?' + new Date().getTime(); // Append a timestamp to ensure the image is not cached
+
+    // Schedule the next update after 5 seconds
+    setTimeout(updateLatestPicture, 10000);
+}
+
+// Call the function to start updating the latest picture
+updateLatestPicture();
+
     </script>
 </body>
 </html>
