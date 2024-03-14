@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import schedule
 import time
+import sys
 
 def save_image_from_rtsp(rtsp_url, output_path):
     # Open the RTSP stream
@@ -44,9 +45,10 @@ def job():
     # Save an image from the RTSP stream
     save_image_from_rtsp(rtsp_url, output_path)
     print("Image saved at " + os.getcwd() + "/" + output_path)
+    sys.stdout.flush()  # Flush the standard output buffer
 
 if __name__ == "__main__":
-    print("Start Pictue Saving")
+    print("Start Picture Saving")
     job()
     # Schedule the job to run every 30 seconds
     schedule.every(30).seconds.do(job)
