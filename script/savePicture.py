@@ -37,7 +37,7 @@ def save_image_from_rtsp(rtsp_url, output_path):
     # Release the camera capture object
     cap.release()
 
-    return image_filename
+    return output_path + "/" + image_filename
 
 def job():
     # Set your RTSP URL and output path
@@ -48,7 +48,7 @@ def job():
     # Save an image from the RTSP stream
     image_filename = save_image_from_rtsp(rtsp_url, output_path)
     if image_filename:
-        print(f"{os.getcwd()}/{__file__} -> created ../images/{timestamp}/{image_filename}")
+        print(f"{os.getcwd()}/{__file__} -> created {image_filename}")
         sys.stdout.flush()  # Flush the standard output buffer
 
 if __name__ == "__main__":
