@@ -1,8 +1,7 @@
 import cv2
 import os
 from datetime import datetime
-import schedule
-import time
+import sys
 import subprocess
 
 def job():
@@ -15,11 +14,12 @@ def job():
     print(f"Saving image from RTSP stream to {os.getcwd() + output_path}")
 
     # Save an image from the RTSP stream
-    subprocess.Popen(['python', 'createTimelaps.py', 'images/' + timestamp + '/', 'videos/', '60'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+    process = subprocess.Popen(['python', 'createTimelaps.py', '../images/' + timestamp + '/', '../videos/', '2'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
 
-    print(f"Image saved at {os.getcwd() + output_path}")
+    print(f"Image saved at {os.getcwd() + '../images/' + timestamp + '/'}")
 
     print("Job completed")
+    sys.stdout.flush()  # Flush the standard output buffer
 
 if __name__ == "__main__":
     print("main started")
