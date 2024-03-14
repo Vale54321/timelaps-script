@@ -37,7 +37,7 @@ def save_image_from_rtsp(rtsp_url, output_path):
     # Release the camera capture object
     cap.release()
 
-    return output_path + "/" + image_filename
+    return output_path + image_filename
 
 def job():
     # Set your RTSP URL and output path
