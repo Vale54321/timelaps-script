@@ -26,7 +26,7 @@ def job():
 if __name__ == "__main__":
     print("main started")
     # Schedule the job to run every 30 seconds
-    schedule.every(30).minutes.do(job)
+    schedule.every(30).seconds.do(job)
     job()
     # Run the scheduler continuously
     while True:
